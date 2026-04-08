@@ -1,4 +1,4 @@
-/* ─── DATA ─── */
+
 const GC={'Metal Progressivo':'#e05c5c','Rock':'#e07a2f','Groove':'#d4c44a','Pop':'#5c9de0','Pop Alternative':'#a05ce0','R&B':'#e05c9d','Soul':'#e09a5c','Sertanejo':'#5ce07a','Pagode':'#5ccfe0','Rap Brasileiro':'#e0c45c','Eletrônica':'#5c7ae0'};
 const GG={'Metal Progressivo':'#7a1515','Rock':'#7a3a0a','Groove':'#6a600a','Pop':'#0a3a7a','Pop Alternative':'#3a0a7a','R&B':'#7a0a40','Soul':'#7a4a0a','Sertanejo':'#0a7a2f','Pagode':'#0a5a7a','Rap Brasileiro':'#7a5a0a','Eletrônica':'#0a1a7a'};
 const LE=['','🟢','🟡','🟠','🔴','💀'];
@@ -27,15 +27,17 @@ const T=[
   {lv:5,ch:"Extensão de sub-bass: você sente a nota?",d:'Esse é o teste final de sub-bass. A nota mais profunda da música só aparece para quem tem fone de verdade. Você vai sentir ou vai perder?',g:"Rap Brasileiro",s:"777-666",a:"Matuê",sid:"3sGcETRMuAgcPgjDpIkgMn",fq:"low",q:"Você sentiu a nota grave mais funda da música — aquela que parece vibrar no peito — ou ela sumiu no seu fone?"},
 ];
 
-const LOCAL_FILES=[
-  'audio/01_Get_Lucky.mp3','audio/02_Blinding_Lights.mp3','audio/03_Dont_Stop_Til_You_Get_Enough.mp3',
-  'audio/04_Flowers.mp3','audio/05_No_Love_Dying.mp3','audio/06_Feeling_Good.mp3',
-  'audio/07_Misery_Business.mp3','audio/08_telepatia.mp3','audio/09_Arranhao.mp3',
-  'audio/10_Pe_Na_Areia.mp3','audio/11_Sinal_Vital.mp3','audio/12_Basket_Case.mp3',
-  'audio/13_bad_guy.mp3','audio/14_MONACO.mp3','audio/15_Erro_Gostoso.mp3',
-  'audio/16_Hi-Lo_Hollow.mp3','audio/17_Ghost_of_Perdition.mp3','audio/18_Blackest_Eyes.mp3',
-  'audio/19_A_Vida_E_Desafio.mp3','audio/20_777-666.mp3',
-];
+const SUPABASE_BASE_URL = 'https://msxxupxlcjlnuajpajrt.supabase.co/storage/v1/object/public/audios/';
+
+const REMOTE_FILES = [
+  '01_Get_Lucky.mp3','02_Blinding_Lights.mp3','03_Dont_Stop_Til_You_Get_Enough.mp3',
+  '04_Flowers.mp3','05_No_Love_Dying.mp3','06_Feeling_Good.mp3',
+  '07_Misery_Business.mp3','08_telepatia.mp3','09_Arranhao.mp3',
+  '10_Pe_Na_Areia.mp3','11_Sinal_Vital.mp3','12_Basket_Case.mp3',
+  '13_bad_guy.mp3','14_MONACO.mp3','15_Erro_Gostoso.mp3',
+  '16_Hi-Lo_Hollow.mp3','17_Ghost_of_Perdition.mp3','18_Blackest_Eyes.mp3',
+  '19_A_Vida_E_Desafio.mp3','20_777-666.mp3'
+].map(file => SUPABASE_BASE_URL + file);
 
 const player = new Audio();
 player.preload = 'none';
@@ -82,7 +84,7 @@ function playTrack(idx, ctx) {
   player.pause();
   currentTrackIdx = idx;
   playerCtx = ctx;
-  player.src = LOCAL_FILES[idx];
+  player.src = REMOTE_FILES[idx]; // <-- Aqui foi a mudança!
   player.load();
   player.play().catch(() => showToast('⚠ Toque em qualquer lugar para habilitar o áudio', 4000));
 }

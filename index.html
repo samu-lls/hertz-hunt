@@ -7,7 +7,261 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<div id="cur"></div>
+<div id="curR"></div>
+<div id="toast"><span class="t-icon">🎵</span><span id="toast-msg"></span></div>
 
+<header id="header">
+  <span class="nav-brand" onclick="nav('home')">
+    <svg class="nav-brand-icon" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="14" cy="14" r="13" fill="rgba(29,185,84,0.12)" stroke="rgba(29,185,84,0.4)" stroke-width="1"/>
+      <ellipse cx="14" cy="13" rx="5.5" ry="6" fill="rgba(29,185,84,0.25)" stroke="#1DB954" stroke-width="1.2"/>
+      <circle cx="14" cy="12" r="1.2" fill="#1DB954"/>
+      <circle cx="11.8" cy="14" r=".6" fill="#1DB954" opacity=".5"/>
+      <circle cx="16.2" cy="14" r=".6" fill="#1DB954" opacity=".5"/>
+      <path d="M10.5 17.5 Q14 20.5 17.5 17.5" stroke="#1DB954" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+      <path d="M4 10 Q5.5 14 4 18" stroke="rgba(29,185,84,0.4)" stroke-width="1" fill="none" stroke-linecap="round"/>
+      <path d="M24 10 Q22.5 14 24 18" stroke="rgba(29,185,84,0.4)" stroke-width="1" fill="none" stroke-linecap="round"/>
+    </svg>
+    <span class="nav-brand-text">
+      <span class="nav-brand-name">Hertz Hunt</span>
+      <span class="nav-brand-sub">Teste de Fone</span>
+    </span>
+  </span>
+  <nav class="nav-links">
+    <span class="nav-link active" data-page="home" onclick="nav('home')">Home</span>
+    <span class="nav-link" data-page="experience" onclick="nav('experience')">Experience</span>
+    <span class="nav-link" data-page="playlist" onclick="nav('playlist')">Playlist</span>
+    <span class="nav-link" data-page="apoiase" onclick="nav('apoiase')">Apoia-se</span>
+  </nav>
+</header>
+
+<div id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal-box" id="modal-box">
+    <button class="modal-close" onclick="closeModal(null,true)">✕</button>
+    <div id="modal-genre-badge" class="modal-genre-badge"></div>
+    <p class="modal-challenge" id="modal-ch-label"></p>
+    <h2 class="modal-title" id="modal-title"></h2>
+    <p class="modal-artist" id="modal-artist"></p>
+    <p class="modal-desc" id="modal-desc"></p>
+    <div class="modal-diff">
+      <span class="modal-diff-label">Dificuldade</span>
+      <div class="modal-diff-pips" id="modal-diff-pips"></div>
+    </div>
+    <div class="modal-player">
+      <div style="display:flex;align-items:center;gap:20px;width:100%">
+        <div class="modal-vinyl" id="modal-vinyl"></div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:14px">
+          <div class="modal-waveform" id="modal-waveform">
+            </div>
+          <div class="modal-controls">
+            <button class="modal-play-btn" id="modal-play-btn" onclick="modalPlayClick()">▶</button>
+            <a class="modal-sp-btn" id="modal-sp-btn" href="#" target="_blank" rel="noopener">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+              Spotify
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="modal-prog" style="width:100%">
+        <div class="modal-track-bar" id="modal-bar" onclick="modalSeek(event)">
+          <div class="modal-track-fill" id="modal-fill"></div>
+        </div>
+        <div class="modal-times"><span id="modal-tm">0:00</span><span id="modal-dur">—</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="page-wrapper">
+
+<div id="page-home" class="page active">
+
+  <div class="home-hero noise">
+    <div class="home-hero-bg"></div>
+    <div class="home-hero-inner">
+      <p class="home-eyebrow">20 desafios sonoros</p>
+      <h1 class="home-h1">Até onde vai<br/><em>o seu fone?</em></h1>
+      <p class="home-sub">Uma experiência imersiva projetada para levar cada frequência do seu headphone ao limite — graves, agudos, dinâmica, espaço sonoro e muito mais.</p>
+      <div class="home-nav-cards">
+        <div class="hnc" style="--hc:#1DB954" onclick="nav('experience')">
+          <span class="hnc-label">Experience</span>
+          <span class="hnc-title">O teste</span>
+          <span class="hnc-desc">20 músicas, 5 níveis, um fone no limite.</span>
+          <span class="hnc-arrow">↑ cabeçalho</span>
+        </div>
+        <div class="hnc" style="--hc:#5c9de0" onclick="nav('playlist')">
+          <span class="hnc-label">Playlist</span>
+          <span class="hnc-title">As faixas</span>
+          <span class="hnc-desc">Ouça e salve no Spotify.</span>
+          <span class="hnc-arrow">↑ cabeçalho</span>
+        </div>
+        <div class="hnc" style="--hc:#ffb432" onclick="nav('apoiase')">
+          <span class="hnc-label">Apoia-se</span>
+          <span class="hnc-title">Apoie</span>
+          <span class="hnc-desc">Gostou? Ajude a manter o projeto.</span>
+          <span class="hnc-arrow">↑ cabeçalho</span>
+        </div>
+      </div>
+    </div>
+    <div class="home-scroll"><span class="home-scroll-dot"></span>Role para ver os desafios</div>
+  </div>
+
+  <div class="home-challenges">
+    <div class="home-challenges-header">
+      <p class="hch-eyebrow">Os desafios</p>
+      <h2 class="hch-title">Clique e<br/><em>teste agora</em></h2>
+    </div>
+    <div id="home-challenges-body"></div>
+  </div>
+
+</div><div id="page-experience" class="page">
+  <div id="exp-sdots"></div>
+  <div class="exp-scroll-container" id="exp-scroll">
+
+    <div class="exp-section" id="exp-intro">
+      <div class="exp-intro-bg"></div>
+      <div class="exp-intro-inner" style="position:relative;z-index:3">
+        <div class="exp-headphone-icon">🎧</div>
+        <h2 class="exp-intro-title">Coloque o fone<br/><em>nos dois ouvidos</em></h2>
+        <p class="exp-intro-sub">Para uma experiência completa, use fones com os dois canais. O teste foi desenhado para a escuta binaural — cada detalhe importa.</p>
+        <button class="exp-play-btn" onclick="expGoToAbout()">▶</button>
+      </div>
+    </div>
+
+    <div class="exp-section" id="exp-about">
+      <div class="exp-about-bg"></div>
+      <div class="exp-about-inner">
+        <p class="exp-about-eyebrow">A experiência</p>
+        <h2 class="exp-about-title">20 músicas.<br/><em>Um fone.</em></h2>
+        <p class="exp-about-body">Cada faixa foi escolhida para desafiar uma característica diferente do seu headphone. Há músicas que testam o grave profundo, outras que exigem agilidade nos agudos, separação de instrumentos, dinâmica orquestral e muito mais.<br/><br/>Cada desafio tem um nível de dificuldade: do <strong>Aquecimento</strong> até o <strong>Extremo</strong>. Role para ver todos os desafios e, em seguida, a experiência começa automaticamente.</p>
+        <div class="exp-about-cta">Role para continuar <div class="exp-about-arrow"></div></div>
+      </div>
+    </div>
+
+    <div class="exp-section" id="exp-challenges">
+      <div class="exp-ch-bg"></div>
+      <div class="exp-ch-inner">
+        <h2 class="exp-ch-title">Os <em>desafios</em></h2>
+        <div class="exp-ch-grid" id="exp-ch-grid"></div>
+      </div>
+    </div>
+
+    <div id="exp-tracks"></div>
+
+  </div></div><div id="page-playlist" class="page">
+  <div class="pl-page-inner">
+
+    <div class="pl-header">
+      <p class="pl-eyebrow">A trilha do teste</p>
+      <h2 class="pl-title">Playlist<br/><em>completa</em></h2>
+      <div class="pl-meta">
+        <span class="pl-count-badge">20 faixas · 5 níveis</span>
+        <a class="pl-sp-link" href="https://open.spotify.com/playlist/4N9QsntuVrFVrEl92QsjhK?si=6H9e25v2SriAtCZQiVH9ug" target="_blank" rel="noopener">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+          Abrir no Spotify
+        </a>
+      </div>
+    </div>
+
+    <div class="pl-controls" id="pl-controls">
+      <button class="pl-ctrl-btn" id="pl-prev-btn" onclick="plPrev()" title="Anterior">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="19 20 9 12 19 4"/><line x1="5" y1="4" x2="5" y2="20"/></svg>
+      </button>
+      <button class="pl-ctrl-btn" id="pl-play-btn" onclick="plPlayPause()">▶</button>
+      <button class="pl-ctrl-btn" id="pl-next-btn" onclick="plNext()" title="Próxima">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="5 4 15 12 5 20"/><line x1="19" y1="4" x2="19" y2="20"/></svg>
+      </button>
+      <div class="pl-now-playing">
+        <div class="pl-np-track" id="pl-np-track">—</div>
+        <div class="pl-np-artist" id="pl-np-artist">Selecione uma faixa</div>
+      </div>
+      <div class="pl-progress-wrap">
+        <div class="pl-prog-bar" id="pl-prog-bar" onclick="plSeek(event)">
+          <div class="pl-prog-fill" id="pl-prog-fill"></div>
+        </div>
+        <div class="pl-times"><span id="pl-tm">0:00</span><span id="pl-dur">—</span></div>
+      </div>
+    </div>
+
+    <div class="pl-track-list" id="pl-track-list"></div>
+
+  </div>
+</div><div id="page-apoiase" class="page">
+  <div class="ap-bg"></div>
+  <div class="ap-inner">
+    <div class="ap-icon">❤️</div>
+    <p class="ap-eyebrow">Apoie o projeto</p>
+    <h2 class="ap-title">Feito com<br/><em>muito carinho</em></h2>
+    <p class="ap-desc">Este site é gratuito, sem anúncios e feito por amor à música e ao bom áudio. Se você curtiu a experiência e quiser ajudar a manter o projeto no ar, qualquer contribuição é muito bem-vinda.</p>
+    <div class="ap-cards">
+      <div class="ap-card"><div class="ap-card-val">☕</div><div class="ap-card-label">Um café</div></div>
+      <div class="ap-card"><div class="ap-card-val">🎵</div><div class="ap-card-label">Uma faixa</div></div>
+      <div class="ap-card"><div class="ap-card-val">🎧</div><div class="ap-card-label">Um upgrade</div></div>
+    </div>
+    <a class="ap-btn" href="https://www.paypal.com/donate/?business=78H7QSAAB487J&no_recurring=0&currency_code=BRL" target="_blank" rel="noopener">
+      💛 Quero apoiar
+    </a>
+    <p class="ap-note">Pagamento seguro via PayPal · Qualquer valor é bem-vindo 💛</p>
+
+    <div class="ap-feedback">
+      <p class="ap-fb-title">Deixe sua sugestão</p>
+      <textarea class="ap-fb-textarea" id="ap-fb-text" placeholder="Conta o que você achou, o que melhoraria, o que sentiu falta…"></textarea>
+      <div class="ap-fb-row">
+        <span class="ap-fb-note">Nenhum cadastro necessário.</span>
+        <button class="ap-fb-btn" id="ap-fb-send" onclick="sendFeedback()">✉ Enviar</button>
+      </div>
+      <div class="ap-fb-success" id="ap-fb-success">✓ Enviado! Obrigado pela contribuição.</div>
+    </div>
+  </div>
+</div></div><div id="rating-panel">
+  <div class="rp-header">
+    <div style="flex:1;min-width:0">
+      <div style="font-size:.5rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:4px">Seu fone reproduz bem…</div>
+      <span class="rp-track" id="rp-track-name">—</span>
+    </div>
+    <button class="rp-minimize" onclick="rpMinimize()" title="Minimizar">−</button>
+  </div>
+  <p class="rp-question" id="rp-question">—</p>
+  <div class="rp-stars" id="rp-stars"></div>
+  <div class="rp-value" id="rp-value"></div>
+  <div class="rp-actions">
+    <button class="rp-btn-skip" onclick="rpSkip()">Pular</button>
+    <button class="rp-btn-rate" id="rp-btn-rate" onclick="rpConfirm()">Avaliar</button>
+  </div>
+  <button class="rp-btn-finish" onclick="rpFinish()">Finalizar Teste</button>
+  <div class="rp-progress" id="rp-progress"></div>
+</div>
+
+<div id="rp-bubble" onclick="rpUnminimize()" title="Abrir avaliação">
+  <span style="font-size:1rem">🎧</span>
+  <span>Teste</span>
+</div>
+
+<div id="report-overlay">
+  <div class="report-box">
+    <button class="report-close" onclick="closeReport()">✕</button>
+    <p class="report-eyebrow">Resultado</p>
+    <h2 class="report-title" id="rep-title">Relatório do Fone</h2>
+    <p class="report-subtitle" id="rep-subtitle"></p>
+    <div class="report-score-row">
+      <div class="report-big-stars" id="rep-big-stars"></div>
+      <div class="report-score-info">
+        <div class="report-score-num" id="rep-score-num">—</div>
+        <div class="report-score-label">nota geral</div>
+      </div>
+    </div>
+    <div class="report-cats" id="rep-cats"></div>
+    <div class="report-divider"></div>
+    <div class="report-insights" id="rep-insights"></div>
+    <div class="report-footer">
+      Avaliação baseada em <span id="rep-rated-count">—</span> músicas ouvidas.<br/>
+      Os resultados refletem a sua percepção auditiva e as características do seu fone.
+      <br/><br/>
+      <button class="report-btn-retry" onclick="closeReport()">↩ Voltar à experiência</button>
+    </div>
+  </div>
+</div>
     <script src="js/script.js"></script>
 </body>
 </html>
